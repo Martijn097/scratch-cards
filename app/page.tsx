@@ -1,54 +1,39 @@
-import DeployButton from "../components/DeployButton";
 import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
-import Header from "@/components/Header";
+import Header from "@/components/ui/Header";
+import Footer from "@/components/ui/Footer";
+import { redirect } from "next/navigation";
 
 export default async function Index() {
-  const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
-    try {
-      createClient();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
+  const supabase = createClient();
+  const { data: notes } = await supabase.from('notes').select()
 
-  const isSupabaseConnected = canInitSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/login");
+  }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <DeployButton />
-          {isSupabaseConnected && <AuthButton />}
+    <div className="min-h-screen flex-1 w-full flex flex-col gap-20 items-center">
+
+      <Header />
+      <main className="flex-1 flex flex-col gap-6">
+        {/* <pre>{JSON.stringify(notes, null, 2)}</pre> */}
+        <div className="relative h-[32rem] w-[32rem] flex items-center justify-center">
+          <div className="absolute bg-purple-100 h-[24rem] w-[24rem] rounded-full"></div>
+          <div className="absolute bg-purple-200 h-[20rem] w-[20rem] rounded-full"></div>
+          <div className="rotate-[-10deg] shadow-custom bg-pattern-opacity absolute bg-purple-300 h-[16rem] w-[16rem] rounded-lg flex items-center justify-center">
+            <div className="absolute bg-purple-400 h-[8rem] w-[8rem] rounded-full flex items-center justify-center">
+              <span className="text-white text-3xl text-center leading-7">Kras<br></br>& win</span>
+            </div>
+          </div>
         </div>
-      </nav>
+      </main>
 
-      <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-        <Header />
-        <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">Next steps</h2>
-          {isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-        </main>
-      </div>
-
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-        <p>
-          Powered by{" "}
-          <a
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
-          >
-            Supabase
-          </a>
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import confetti from 'canvas-confetti';
 import styles from './styles.module.css';
 import { isSafari } from '@/utils/isSafari';
 
-const Home = () => {
+export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cardCanvasRenderRef = useRef<HTMLImageElement>(null);
   const cardCoverContainerRef = useRef<HTMLDivElement>(null);
@@ -108,7 +108,6 @@ const Home = () => {
       const cardImage = cardImageRef.current;
       if (!text) return;
 
-
       cardCoverContainer?.classList.add('clear');
       confetti({
         particleCount: 100,
@@ -150,6 +149,7 @@ const Home = () => {
     const context = canvas?.getContext('2d');
     if (!context) return;
     if (!canvas) return;
+
     const { x, y } = getPosition(e, canvas);
     plotLine(context, positionX, positionY, x, y);
     positionX = x;
@@ -163,12 +163,12 @@ const Home = () => {
     }
   };
 
-  const handlePointerDown = (e: React.PointerEvent) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     cardCoverRef.current?.classList.remove('shine');
-    ({ x: positionX, y: positionY } = getPosition(e, canvas));
+    ({ x: positionX, y: positionY } = getPosition(e.nativeEvent, canvas));
     clearTimeout(clearDetectionTimeout!);
 
     const plotMove = (event: PointerEvent) => plot(event);
@@ -179,7 +179,6 @@ const Home = () => {
       clearDetectionTimeout = setTimeout(checkBlackFillPercentage, 500);
     }, { once: true });
   };
-
 
   return (
     <div>
@@ -222,5 +221,3 @@ const Home = () => {
     </div>
   );
 }
-
-export default Home;

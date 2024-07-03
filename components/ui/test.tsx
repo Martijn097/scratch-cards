@@ -130,7 +130,7 @@ const Home = () => {
       });
     };
 
-    const plot = (e: PointerEvent) => {
+    const plot = (e) => {
       const { x, y } = getPosition(e);
       plotLine(context, positionX, positionY, x, y);
       positionX = x;
@@ -144,7 +144,7 @@ const Home = () => {
       }
     };
 
-    const onPointerDown = (e: PointerEvent) => {
+    const onPointerDown = (e) => {
       ({ x: positionX, y: positionY } = getPosition(e));
       clearTimeout(clearDetectionTimeout!);
       canvas.addEventListener('pointermove', plot);

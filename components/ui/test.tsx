@@ -130,43 +130,35 @@ const Home = () => {
       });
     };
 
-    const plot = (e: PointerEvent | TouchEvent) => {
+    const plot = (e: PointerEvent) => {
       const { x, y } = getPosition(e);
       plotLine(context, positionX, positionY, x, y);
       positionX = x;
       positionY = y;
       if (isSafari()) {
-        clearTimeout(setImageTimeout as NodeJS.Timeout);
+        // clearTimeout(setImageTimeout as NodeJS.Timeout);
 
-        setImageTimeout = setTimeout(() => {
+        // setImageTimeout = setTimeout(() => {
           setImageFromCanvas();
-        }, 5);
+        // }, 5);
       }
     };
 
-    const onPointerDown = (e: PointerEvent | TouchEvent) => {
+    const onPointerDown = (e: PointerEvent) => {
       ({ x: positionX, y: positionY } = getPosition(e));
       clearTimeout(clearDetectionTimeout!);
       canvas.addEventListener('pointermove', plot);
-      canvas.addEventListener('touchmove', plot);
 
       window.addEventListener('pointerup', () => {
         canvas.removeEventListener('pointermove', plot);
         clearDetectionTimeout = setTimeout(checkBlackFillPercentage, 500);
       }, { once: true });
-
-      window.addEventListener('touchend', () => {
-        canvas.removeEventListener('touchmove', plot);
-        clearDetectionTimeout = setTimeout(checkBlackFillPercentage, 500);
-      }, { once: true });
     };
 
     canvas.addEventListener('pointerdown', onPointerDown);
-    canvas.addEventListener('touchstart', onPointerDown);
 
     return () => {
       canvas.removeEventListener('pointerdown', onPointerDown);
-      canvas.removeEventListener('touchstart', onPointerDown);
     };
   }, []);
 

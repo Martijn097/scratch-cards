@@ -17,8 +17,6 @@ const Home = () => {
   useEffect(() => {
     if (isSafari()) {
       setIsSafariBrowser(true);
-    } else {
-      console.log("other browser");
     }
   }, []);
 
@@ -151,6 +149,15 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
+
+      <div>
+        {isSafariBrowser ? (
+          <p>You are using Safari</p>
+        ) : (
+          <p>You are not using Safari</p>
+        )}
+      </div>
+
       <div className={styles.scratchCard}>
         <div className={`${styles.scratchCardCoverContainer} ${isScratched ? styles.clear : ''}`}>
           <canvas ref={canvasRef} className={styles.scratchCardCanvas} />

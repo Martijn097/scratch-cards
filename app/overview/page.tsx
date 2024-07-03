@@ -17,7 +17,7 @@ export default async function Index() {
 
   return (
     <div className="min-h-screen flex-1 w-full flex flex-col gap-20 items-center">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="w-full">
         <Card />
         <Home />
       </div>

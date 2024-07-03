@@ -10,10 +10,7 @@ type DataType = {
   title: string
 }
 
-// const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
 export default function Card() {
-
   // Refs for scratch card elements
   const scratchCardCoverRef = useRef<HTMLDivElement>(null);
   const scratchCardCanvasRenderRef = useRef<HTMLImageElement>(null);
@@ -22,6 +19,8 @@ export default function Card() {
   const scratchCardImageRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isPointerDown, setIsPointerDown] = useState(false);
+  let positionX: number;
+  let positionY: number;
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [clearDetectionTimeout, setClearDetectionTimeout] = useState<NodeJS.Timeout | null>(null);
   const [devicePixelRatio, setDevicePixelRatio] = useState(1);
@@ -180,9 +179,9 @@ export default function Card() {
     const { x, y } = getPosition(e);
     const context = canvasRef.current?.getContext('2d');
     if (context) {
-      plotLine(context, position.x, position.y, x, y);
+      plotLine(context, positionX, positionY, x, y);
     }
-    setPosition({ x, y });
+    // setPosition({ x, y });
     if (isSafari()) {
       clearTimeout(clearDetectionTimeout!);
       setClearDetectionTimeout(setTimeout(() => {
@@ -193,8 +192,9 @@ export default function Card() {
 
   const handlePointerDown = (e: React.PointerEvent) => {
     scratchCardCoverRef.current?.classList.remove('shine');
-    const pos = getPosition(e);
-    setPosition(pos); // Ensure the position state is updated here
+    // const pos = getPosition(e);
+    // setPosition(pos); // Ensure the position state is updated here
+    ({ x: positionX, y: positionY } = getPosition(e));
     clearTimeout(clearDetectionTimeout!);
     setIsPointerDown(true);
     canvasRef.current?.addEventListener('pointermove', plot);

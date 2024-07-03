@@ -1,225 +1,176 @@
+
 'use client'
-import { createClient } from "@/utils/supabase/client";
-import { isSafari } from '@/utils/isSafari';
 import { useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
+import styles from './styles.module.css';
+import { isSafari } from '@/utils/isSafari';
 
-// Define the type for your data items
-type DataType = {
-  id: number
-  title: string
-}
-
-export default function Card() {
-  // Refs for scratch card elements
+const ScratchCard: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const scratchCardCoverRef = useRef<HTMLDivElement>(null);
   const scratchCardCanvasRenderRef = useRef<HTMLImageElement>(null);
   const scratchCardCoverContainerRef = useRef<HTMLDivElement>(null);
-  const scratchCardTextRef = useRef<HTMLParagraphElement>(null);
+  const scratchCardTextRef = useRef<HTMLDivElement>(null);
   const scratchCardImageRef = useRef<HTMLImageElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [isPointerDown, setIsPointerDown] = useState(false);
-  let positionX: number;
-  let positionY: number;
   const [position, setPosition] = useState({ x: 0, y: 0 });
-
   const [clearDetectionTimeout, setClearDetectionTimeout] = useState<NodeJS.Timeout | null>(null);
-
-
-
-  const [devicePixelRatio, setDevicePixelRatio] = useState(1);
-
-
-  const supabase = createClient();
-  const [data, setData] = useState<DataType[]>([])
-  const [loading, setLoading] = useState(true)
+  const [setImageTimeout, setSetImageTimeout] = useState<NodeJS.Timeout | null>(null);
+  const devicePixelRatio = window.devicePixelRatio || 1;
 
   useEffect(() => {
-
-    if (isSafari() && canvasRef.current) {
-      canvasRef.current.classList.add('hidden');
-    }
-
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from('scratch-cards')
-        .select('*')
-      
-      if (error) {
-        console.error(error)
-      } else {
-        setData(data)
-      }
-
-      setLoading(false)
-    }
-
-    fetchData()
-
-
-  }, []);
-
-  const handleClick = () => {
-    console.log('Button clicked!');
-  };
-
-  const getPosition = ({ clientX, clientY }: { clientX: number; clientY: number }) => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const { left, top } = canvas.getBoundingClientRect();
-      return {
-        x: clientX - left,
-        y: clientY - top,
-      };
-    }
-    return { x: 0, y: 0 };
-  };
-
-  const plotLine = (context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number) => {
-    const diffX = Math.abs(x2 - x1);
-    const diffY = Math.abs(y2 - y1);
-    const dist = Math.sqrt(diffX * diffX + diffY * diffY);
-    const step = dist / 50;
-    let i = 0;
-    let t: number;
-    let x: number;
-    let y: number;
-
-    while (i < dist) {
-      t = Math.min(1, i / dist);
-
-      x = x1 + (x2 - x1) * t;
-      y = y1 + (y2 - y1) * t;
-
-      context.beginPath();
-      context.arc(x, y, 16, 0, Math.PI * 2);
-      context.fill();
-
-      i += step;
-    }
-  };
-
-  const setImageFromCanvas = () => {
-    const canvas = canvasRef.current;
-    const scratchCardCanvasRender = scratchCardCanvasRenderRef.current;
-    if (canvas && scratchCardCanvasRender) {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          const previousUrl = scratchCardCanvasRender.src;
-          scratchCardCanvasRender.src = url;
-          if (!previousUrl) {
-            scratchCardCanvasRender.classList.remove('hidden');
-          } else {
-            URL.revokeObjectURL(previousUrl);
-          }
-        }
-      });
-    }
-  };
-
-  const checkBlackFillPercentage = () => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
-    const canvasWidth = canvas?.width!;
-    const canvasHeight = canvas?.height!;
+    
+    if (canvas && context) {
+      const canvasWidth = canvas.offsetWidth * devicePixelRatio;
+      const canvasHeight = canvas.offsetHeight * devicePixelRatio;
 
-    if (context) {
-      const imageData = context.getImageData(0, 0, canvasWidth, canvasHeight);
-      const pixelData = imageData.data;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
 
-      let blackPixelCount = 0;
+      context.scale(devicePixelRatio, devicePixelRatio);
 
-      for (let i = 0; i < pixelData.length; i += 4) {
-        const red = pixelData[i];
-        const green = pixelData[i + 1];
-        const blue = pixelData[i + 2];
-        const alpha = pixelData[i + 3];
+      if (isSafari()) {
+        canvas.classList.add('hidden');
+      }
 
-        if (red === 0 && green === 0 && blue === 0 && alpha === 255) {
-          blackPixelCount++;
+      const plotLine = (context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number) => {
+        const diffX = Math.abs(x2 - x1);
+        const diffY = Math.abs(y2 - y1);
+        const dist = Math.sqrt(diffX * diffX + diffY * diffY);
+        const step = dist / 50;
+        let i = 0;
+        let t;
+        let x;
+        let y;
+
+        while (i < dist) {
+          t = Math.min(1, i / dist);
+
+          x = x1 + (x2 - x1) * t;
+          y = y1 + (y2 - y1) * t;
+
+          context.beginPath();
+          context.arc(x, y, 16, 0, Math.PI * 2);
+          context.fill();
+
+          i += step;
         }
-      }
+      };
 
-      const blackFillPercentage = (blackPixelCount * 100) / (canvasWidth * canvasHeight);
-
-      if (blackFillPercentage >= 45) {
-        scratchCardCoverContainerRef.current?.classList.add('clear');
-        confetti({
-          particleCount: 100,
-          spread: 90,
-          origin: {
-            y: (scratchCardTextRef.current!.getBoundingClientRect().bottom + 60) / window.innerHeight,
-          },
+      const setImageFromCanvas = () => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            const previousUrl = scratchCardCanvasRenderRef.current?.src;
+            if (scratchCardCanvasRenderRef.current) {
+              scratchCardCanvasRenderRef.current.src = url;
+              if (!previousUrl) {
+                scratchCardCanvasRenderRef.current.classList.remove('hidden');
+              } else if (previousUrl) {
+                URL.revokeObjectURL(previousUrl);
+              }
+            }
+          }
         });
-        scratchCardTextRef.current!.textContent = '🎉 You got a $50 Apple gift card!';
-        scratchCardImageRef.current?.classList.add('animate');
-        scratchCardCoverContainerRef.current?.addEventListener('transitionend', () => {
-          scratchCardCoverContainerRef.current?.classList.add('hidden');
+      };
+
+      const plot = (e: PointerEvent) => {
+        const { x, y } = getPosition(e);
+        plotLine(context, position.x, position.y, x, y);
+        setPosition({ x, y });
+        if (isSafari()) {
+          if (setImageTimeout) clearTimeout(setImageTimeout);
+
+          const timeout = setTimeout(() => {
+            setImageFromCanvas();
+          }, 5);
+
+          setSetImageTimeout(timeout);
+        }
+      };
+
+      const getPosition = ({ clientX, clientY }: PointerEvent) => {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top,
+        };
+      };
+
+      const checkBlackFillPercentage = () => {
+        const imageData = context.getImageData(0, 0, canvasWidth, canvasHeight);
+        const pixelData = imageData.data;
+
+        let blackPixelCount = 0;
+
+        for (let i = 0; i < pixelData.length; i += 4) {
+          const red = pixelData[i];
+          const green = pixelData[i + 1];
+          const blue = pixelData[i + 2];
+          const alpha = pixelData[i + 3];
+
+          if (red === 0 && green === 0 && blue === 0 && alpha === 255) {
+            blackPixelCount++;
+          }
+        }
+
+        const blackFillPercentage = (blackPixelCount * 100) / (canvasWidth * canvasHeight);
+
+        if (blackFillPercentage >= 45) {
+          if (scratchCardCoverContainerRef.current) {
+            scratchCardCoverContainerRef.current.classList.add('clear');
+          }
+          confetti({
+            particleCount: 100,
+            spread: 90,
+            origin: {
+              y: (scratchCardTextRef.current?.getBoundingClientRect().bottom ?? 0 + 60) / window.innerHeight,
+            },
+          });
+          if (scratchCardTextRef.current) {
+            scratchCardTextRef.current.textContent = '🎉 You got a $50 Apple gift card!';
+          }
+          if (scratchCardImageRef.current) {
+            scratchCardImageRef.current.classList.add('animate');
+          }
+          if (scratchCardCoverContainerRef.current) {
+            scratchCardCoverContainerRef.current.addEventListener('transitionend', () => {
+              scratchCardCoverContainerRef.current?.classList.add('hidden');
+            }, { once: true });
+          }
+        }
+      };
+
+      canvas.addEventListener('pointerdown', (e) => {
+        if (scratchCardCoverRef.current) {
+          scratchCardCoverRef.current.classList.remove('shine');
+        }
+        const { x, y } = getPosition(e);
+        setPosition({ x, y });
+        if (clearDetectionTimeout) clearTimeout(clearDetectionTimeout);
+
+        canvas.addEventListener('pointermove', plot);
+
+        window.addEventListener('pointerup', () => {
+          canvas.removeEventListener('pointermove', plot);
+          const timeout = setTimeout(() => {
+            checkBlackFillPercentage();
+          }, 500);
+          setClearDetectionTimeout(timeout);
         }, { once: true });
-      }
+      });
     }
-  };
-
-  const plot = (e: PointerEvent) => {
-    const { x, y } = getPosition(e);
-    const context = canvasRef.current?.getContext('2d');
-    if (context) {
-      plotLine(context, positionX, positionY, x, y);
-    }
-    // setPosition({ x, y });
-    if (isSafari()) {
-      clearTimeout(clearDetectionTimeout!);
-      setClearDetectionTimeout(setTimeout(() => {
-        setImageFromCanvas();
-      }, 5));
-    }
-  };
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    scratchCardCoverRef.current?.classList.remove('shine');
-    ({ x: positionX, y: positionY } = getPosition(e));
-    clearTimeout(clearDetectionTimeout!);
-    canvasRef.current?.addEventListener('pointermove', plot);
-    // window.addEventListener('pointerup', handlePointerUp, { once: true });
-
-    window.addEventListener('pointerup', (e) => {
-      canvasRef.current?.removeEventListener('pointermove', plot);
-      setClearDetectionTimeout(setTimeout(() => {
-        checkBlackFillPercentage();
-      }, 500));
-    }, { once: true });
-  };
-
-  // const handlePointerUp = () => {
-  //   canvasRef.current?.removeEventListener('pointermove', plot);
-  //   setClearDetectionTimeout(setTimeout(() => {
-  //     checkBlackFillPercentage();
-  //   }, 500));
-  // };
-
-  if (loading) {
-    return <div>Loading...</div>
-  }
+  }, [clearDetectionTimeout, setImageTimeout, isSafari(), position.x, position.y]);
 
   return (
     <div className="">
-      {data.map(card => (
-        <div className="bg-purple w-24 h-24 m-10" key={card.id}>
-          <h2>{card.title}</h2>
-        </div>
-      ))}
-      <button className="btn" onClick={handleClick}>
-        Click me
-      </button>
-
-
       <div className="scratch-card">
         <div ref={scratchCardCoverContainerRef} className="scratch-card-cover-container">
           <canvas 
             ref={canvasRef}
-            onPointerDown={handlePointerDown}
             className="scratch-card-canvas"
             width="320"
             height="320">
@@ -260,3 +211,5 @@ export default function Card() {
     </div>
   );
 };
+
+export default ScratchCard;

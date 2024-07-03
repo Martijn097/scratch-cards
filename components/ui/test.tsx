@@ -130,7 +130,7 @@ const Home = () => {
       });
     };
 
-    const plot = (e: PointerEvent) => {
+    const plot = (e: PointerEvent | TouchEvent) => {
       const { x, y } = getPosition(e);
       plotLine(context, positionX, positionY, x, y);
       positionX = x;
@@ -144,21 +144,29 @@ const Home = () => {
       }
     };
 
-    const onPointerDown = (e: PointerEvent) => {
+    const onPointerDown = (e: PointerEvent | TouchEvent) => {
       ({ x: positionX, y: positionY } = getPosition(e));
       clearTimeout(clearDetectionTimeout!);
       canvas.addEventListener('pointermove', plot);
+      canvas.addEventListener('touchmove', plot);
 
       window.addEventListener('pointerup', () => {
         canvas.removeEventListener('pointermove', plot);
         clearDetectionTimeout = setTimeout(checkBlackFillPercentage, 500);
       }, { once: true });
+
+      window.addEventListener('touchend', () => {
+        canvas.removeEventListener('touchmove', plot);
+        clearDetectionTimeout = setTimeout(checkBlackFillPercentage, 500);
+      }, { once: true });
     };
 
     canvas.addEventListener('pointerdown', onPointerDown);
+    canvas.addEventListener('touchstart', onPointerDown);
 
     return () => {
       canvas.removeEventListener('pointerdown', onPointerDown);
+      canvas.removeEventListener('touchstart', onPointerDown);
     };
   }, []);
 

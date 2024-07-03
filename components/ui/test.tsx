@@ -42,9 +42,9 @@ export default function Home() {
     canvas.height = canvasHeight;
     context.scale(devicePixelRatio, devicePixelRatio);
 
-    if (isSafari()) {
-      canvas.classList.add('hidden');
-    }
+    // if (isSafari()) {
+    //   canvas.classList.add('hidden');
+    // }
   }, []);
 
   const getPosition = (event: PointerEvent, canvas: HTMLCanvasElement) => {

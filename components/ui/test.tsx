@@ -7,6 +7,16 @@ const Home = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isScratched, setIsScratched] = useState(false);
 
+  const [isSafari, setIsSafari] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+    } else {
+      console.log('false');
+    }
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -123,7 +133,7 @@ const Home = () => {
       </div>
       <p className={styles.text}>🎁 Scratch for a surprise!</p>
       <svg width="0" height="0">
-        <filter id="remove-black" color-interpolation-filters="sRGB">
+        <filter id="remove-black" colorInterpolationFilters="sRGB">
           <feColorMatrix
             type="matrix"
             values="1 0 0 0 0

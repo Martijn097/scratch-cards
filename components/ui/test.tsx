@@ -7,13 +7,10 @@ import { isSafari } from '@/utils/isSafari';
 const Home = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const scratchCardCanvasRenderRef = useRef<HTMLImageElement>(null);
   const [isScratched, setIsScratched] = useState(false);
   const [isSafariBrowser, setIsSafariBrowser] = useState(false);
 
-  // useEffect(() => {
-  //   const userAgent = navigator.userAgent;
-  //   setIsSafari(/^((?!chrome|android).)*safari/i.test(userAgent));
-  // }, []);
   useEffect(() => {
     if (isSafari()) {
       setIsSafariBrowser(true);
@@ -22,7 +19,7 @@ const Home = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const image = imageRef.current;
+    const image = scratchCardCanvasRenderRef.current;
     if (!canvas || !image) return;
     const context = canvas.getContext('2d');
     if (!context) return;
@@ -108,8 +105,16 @@ const Home = () => {
       canvas.toBlob((blob) => {
         if (blob) {
           const url = URL.createObjectURL(blob);
+          let previousUrl = image.src;
           image.src = url;
-          URL.revokeObjectURL(url);
+
+          if (!previousUrl) {
+            image.classList.remove('hidden');
+          } else {
+            URL.revokeObjectURL(previousUrl);
+          }
+
+          previousUrl = url;
         }
       });
     };
@@ -120,12 +125,11 @@ const Home = () => {
       positionX = x;
       positionY = y;
       if (isSafari()) {
-        setImageFromCanvas();
-        // clearTimeout(setImageTimeout);
-    
-        // setImageTimeout = setTimeout(() => {
-          // setImageFromCanvas();
-        // }, 5);
+        clearTimeout(setImageTimeout as NodeJS.Timeout);
+
+        setImageTimeout = setTimeout(() => {
+          setImageFromCanvas();
+        }, 5);
       }
     };
 
@@ -161,6 +165,7 @@ const Home = () => {
       <div className={styles.scratchCard}>
         <div className={`${styles.scratchCardCoverContainer} ${isScratched ? styles.clear : ''}`}>
           <canvas ref={canvasRef} className={styles.scratchCardCanvas} />
+          <img ref={scratchCardCanvasRenderRef} className="scratch-card-canvas-render hidden" />
           <div className={`${styles.scratchCardCover} ${isScratched ? '' : styles.shine}`}>
             <svg className={styles.scratchCardCoverBackground} />
           </div>

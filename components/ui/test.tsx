@@ -2,17 +2,24 @@
 import { useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import styles from './styles.module.css';
+import { isSafari } from '@/utils/isSafari';
 
 const Home = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const scratchCardCanvasRenderRef = useRef<HTMLImageElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const [isScratched, setIsScratched] = useState(false);
-  const [isSafari, setIsSafari] = useState(false);
+  const [isSafariBrowser, setIsSafariBrowser] = useState(false);
 
+  // useEffect(() => {
+  //   const userAgent = navigator.userAgent;
+  //   setIsSafari(/^((?!chrome|android).)*safari/i.test(userAgent));
+  // }, []);
   useEffect(() => {
-    const userAgent = navigator.userAgent;
-    setIsSafari(/^((?!chrome|android).)*safari/i.test(userAgent));
+    if (isSafari()) {
+      setIsSafariBrowser(true);
+    } else {
+      console.log("other browser");
+    }
   }, []);
 
   useEffect(() => {
@@ -35,7 +42,7 @@ const Home = () => {
     canvas.height = canvasHeight;
     context.scale(devicePixelRatio, devicePixelRatio);
 
-    if (isSafari) {
+    if (isSafari()) {
       canvas.classList.add('hidden');
     }
 
@@ -114,7 +121,7 @@ const Home = () => {
       plotLine(context, positionX, positionY, x, y);
       positionX = x;
       positionY = y;
-      if (isSafari) {
+      if (isSafari()) {
         setImageFromCanvas();
         // clearTimeout(setImageTimeout);
     

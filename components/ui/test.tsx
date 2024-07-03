@@ -81,6 +81,7 @@ const Home = () => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
     if (!context) return;
+    if (!canvas) return;
 
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
@@ -105,6 +106,8 @@ const Home = () => {
       const cardCoverContainer = cardCoverContainerRef.current;
       const text = textRef.current;
       const cardImage = cardImageRef.current;
+      if (!text) return;
+
 
       cardCoverContainer?.classList.add('clear');
       confetti({
@@ -146,7 +149,7 @@ const Home = () => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
     if (!context) return;
-
+    if (!canvas) return;
     const { x, y } = getPosition(e, canvas);
     plotLine(context, positionX, positionY, x, y);
     positionX = x;
@@ -160,7 +163,7 @@ const Home = () => {
     }
   };
 
-  const handlePointerDown = (e: PointerEvent) => {
+  const handlePointerDown = (e: React.PointerEvent) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 

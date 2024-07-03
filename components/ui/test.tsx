@@ -5,27 +5,27 @@ import styles from './styles.module.css';
 
 const Home = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const scratchCardCanvasRenderRef = useRef<HTMLImageElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const [isScratched, setIsScratched] = useState(false);
-
   const [isSafari, setIsSafari] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
-    } else {
-      console.log('false');
-    }
+    const userAgent = navigator.userAgent;
+    setIsSafari(/^((?!chrome|android).)*safari/i.test(userAgent));
   }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const image = imageRef.current;
+    if (!canvas || !image) return;
     const context = canvas.getContext('2d');
     if (!context) return;
     
     let isPointerDown = false;
     let positionX: number;
     let positionY: number;
+    let setImageTimeout: NodeJS.Timeout | null = null;
     let clearDetectionTimeout: NodeJS.Timeout | null = null;
 
     const devicePixelRatio = window.devicePixelRatio || 1;
@@ -34,6 +34,10 @@ const Home = () => {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
     context.scale(devicePixelRatio, devicePixelRatio);
+
+    if (isSafari) {
+      canvas.classList.add('hidden');
+    }
 
     const getPosition = (event: PointerEvent) => {
       const { clientX, clientY } = event;
@@ -95,11 +99,29 @@ const Home = () => {
       }
     };
 
+    const setImageFromCanvas = () => {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob);
+          image.src = url;
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+
     const plot = (e: PointerEvent) => {
       const { x, y } = getPosition(e);
       plotLine(context, positionX, positionY, x, y);
       positionX = x;
       positionY = y;
+      if (isSafari) {
+        setImageFromCanvas();
+        // clearTimeout(setImageTimeout);
+    
+        // setImageTimeout = setTimeout(() => {
+          // setImageFromCanvas();
+        // }, 5);
+      }
     };
 
     const onPointerDown = (e: PointerEvent) => {
@@ -129,7 +151,7 @@ const Home = () => {
             <svg className={styles.scratchCardCoverBackground} />
           </div>
         </div>
-        <img className={`${styles.scratchCardImage} ${isScratched ? styles.animate : ''}`} src="https://assets.codepen.io/4175254/apple-gift-card.png" alt="Apple 50$ gift card" />
+        <img ref={imageRef} className={`${styles.scratchCardImage} ${isScratched ? styles.animate : ''}`} src="https://assets.codepen.io/4175254/apple-gift-card.png" alt="Apple 50$ gift card" />
       </div>
       <p className={styles.text}>🎁 Scratch for a surprise!</p>
       <svg width="0" height="0">

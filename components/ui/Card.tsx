@@ -194,7 +194,7 @@ export default function Card() {
   const handlePointerDown = (e: React.PointerEvent) => {
     scratchCardCoverRef.current?.classList.remove('shine');
     const pos = getPosition(e);
-    setPosition(pos);
+    setPosition(pos); // Ensure the position state is updated here
     clearTimeout(clearDetectionTimeout!);
     setIsPointerDown(true);
     canvasRef.current?.addEventListener('pointermove', plot);

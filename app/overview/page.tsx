@@ -1,4 +1,5 @@
 import Card from '@/components/ui/Card';
+import Home from '@/components/ui/test'
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Footer from "@/components/ui/Footer";
@@ -18,6 +19,7 @@ export default async function Index() {
     <div className="min-h-screen flex-1 w-full flex flex-col gap-20 items-center">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card />
+        <Home />
       </div>
       <Footer />
     </div>

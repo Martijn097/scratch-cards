@@ -42,9 +42,9 @@ export default function Home() {
     canvas.height = canvasHeight;
     context.scale(devicePixelRatio, devicePixelRatio);
 
-    if (isSafari()) {
-      canvas.classList.add('hidden');
-    }
+    // if (isSafari()) {
+    //   canvas.classList.add('hidden');
+    // }
   }, []);
 
   const getPosition = (event: PointerEvent, canvas: HTMLCanvasElement) => {
@@ -126,17 +126,17 @@ export default function Home() {
 
   const setImageFromCanvas = () => {
     const canvas = canvasRef.current;
-    const image = cardCanvasRenderRef.current;
-    if (!canvas || !image) return;
+    const cardCanvasRender = cardCanvasRenderRef.current;
+    if (!canvas || !cardCanvasRender) return;
 
     canvas.toBlob((blob) => {
       if (blob) {
         const url = URL.createObjectURL(blob);
-        const previousUrl = image.src;
-        image.src = url;
+        const previousUrl = cardCanvasRender.src;
+        cardCanvasRender.src = url;
 
         if (!previousUrl) {
-          image.classList.remove('hidden');
+          cardCanvasRender.classList.remove('hidden');
         } else {
           URL.revokeObjectURL(previousUrl);
         }
@@ -194,9 +194,9 @@ export default function Home() {
       <div className="relative border-4 border-[#c7c6cf] rounded-lg p-3 w-80 h-80 bg-white">
         <div ref={cardCoverContainerRef} className={`${styles.scratchCardCoverContainer}`}>
           <canvas 
-            onPointerDown={handlePointerDown} 
             ref={canvasRef} 
-            className={styles.scratchCardCanvas}
+            onPointerDown={handlePointerDown} 
+            className="scratch-card-canvas"
             width="320"
             height="320"
           />

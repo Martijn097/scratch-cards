@@ -137,13 +137,13 @@ const Home = () => {
       plotLine(context, positionX, positionY, x, y);
       positionX = x;
       positionY = y;
-      if (isSafari()) {
-        clearTimeout(setImageTimeout as NodeJS.Timeout);
+      // if (isSafari()) {
+      //   clearTimeout(setImageTimeout as NodeJS.Timeout);
 
-        setImageTimeout = setTimeout(() => {
-          setImageFromCanvas();
-        }, 5);
-      }
+      //   setImageTimeout = setTimeout(() => {
+      //     setImageFromCanvas();
+      //   }, 5);
+      // }
     };
 
     const onPointerDown = (e: PointerEvent) => {

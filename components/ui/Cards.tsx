@@ -3,14 +3,16 @@ import { useEffect, useRef, useState } from 'react';
 import { createClient } from "@/utils/supabase/client";
 import confetti from 'canvas-confetti';
 import { isSafari } from '@/utils/isSafari';
+import Link from 'next/link';
 
 // Define the type for your data items
 type DataType = {
   id: number
   title: string
+  completed: boolean
 }
 
-export default function Card() {
+export default function Cards() {
   // Refs for card
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cardCanvasRenderRef = useRef<HTMLImageElement>(null);
@@ -49,6 +51,21 @@ export default function Card() {
     fetchData()
 
   }, []);
+
+  // Completed card function
+  const markAsCompleted = async (id: number) => {
+    const { data, error } = await supabase
+      .from('scratch-cards') 
+      .update({ completed: true })
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error updating data:', error);
+    } else {
+      // Optionally, update the local state to reflect the change
+      setData(prevData => prevData.map(card => card.id === id ? { ...card, completed: true } : card));
+    }
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -185,11 +202,34 @@ export default function Card() {
   return (
     <div className="w-full h-full">
 
-      {data.map(card => (
-        <div className="bg-purple w-24 h-24 m-10" key={card.id}>
-          <h2>{card.title}</h2>
-        </div>
-      ))}
+      <div className="grid grid-cols-3 gap-10">
+        {data.map(card => (
+
+          <Link 
+            href={`/overview/${card.id}`} 
+            key={card.id} 
+            className="relative w-full h-full flex items-center justify-center aspect-square"
+          >
+            <div className="absolute bg-purple-100 w-full h-full rounded-full"></div>
+            <div className="absolute bg-purple-200 w-[90%] h-[90%] rounded-full"></div>
+            <div className="rotate-[-10deg] shadow-custom bg-pattern-opacity absolute bg-purple-300 w-[80%] h-[80%] rounded-lg flex items-center justify-center">
+              <div className="absolute bg-purple-400 w-[60%] h-[60%] rounded-full flex items-center justify-center">
+                <span className="text-white text-2xl text-center leading-6">Kras<br></br>& win</span>
+              </div>
+            </div>
+          </Link>
+        // <div className="bg-purple w-24 h-24 m-10" key={card.id}>
+        //   <h2>{card.title}</h2>
+        //   <h2>{card.completed ? 'yes' : 'no'}</h2>
+        //   <button onClick={() => markAsCompleted(card.id)}>
+        //     Mark as Completed
+        //   </button>
+        //   <Link href={`/overview/${card.id}`}>
+        //     <span className="text-blue-500">View Details</span>
+        //   </Link>
+        // </div>
+        ))}
+      </div>
 
       <div className="scratch-card">
         <div ref={cardCoverContainerRef} className="scratch-card-cover-container">

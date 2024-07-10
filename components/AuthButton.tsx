@@ -22,8 +22,8 @@ export default async function AuthButton() {
     <div className="flex items-center gap-4">
       {/* Hey, {user.email}! */}
       <form action={signOut}>
-        <button className="flex">
-          <LogoutIcon className="h-8 w-8 text-white cursor-pointer" />
+        <button className="flex p-3 border border-neutral-200 rounded-lg">
+          <LogoutIcon className="h-8 w-8 cursor-pointer" />
         </button>
       </form>
     </div>

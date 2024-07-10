@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import Footer from "@/components/ui/Footer";
 
 export default async function Index() {
   const supabase = createClient();
@@ -17,7 +16,6 @@ export default async function Index() {
   return (
     <div className="min-h-screen flex-1 w-full flex flex-col gap-20 items-center">
       about
-      <Footer />
     </div>
   );
 }

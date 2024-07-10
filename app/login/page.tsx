@@ -6,17 +6,30 @@ import { SubmitButton } from "./submit-button";
 import Container from "@/components/ui/Container"
 import Image from 'next/image';
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+
+  const supabase = createClient();
+
+  // Check if the user is already logged in
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session) {
+    // If the user is logged in, redirect to the homepage
+    return redirect("/");
+  }
+
   const signIn = async (formData: FormData) => {
     "use server";
 
+    const supabase = createClient();
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const supabase = createClient();
 
     const { error } = await supabase.auth.signInWithPassword({
       email,

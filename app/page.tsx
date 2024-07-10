@@ -1,7 +1,5 @@
-import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-import Header from "@/components/ui/Header";
-import Footer from "@/components/ui/Footer";
+import Image from 'next/image';
 import { redirect } from "next/navigation";
 
 export default async function Index() {
@@ -18,7 +16,22 @@ export default async function Index() {
   return (
     <div className="min-h-screen flex-1 w-full flex flex-col gap-20 items-center">
 
-      <Header />
+      <div className="flex mt-8 items-center w-full justify-center flex-col gap-4">
+        <div className="text-4xl flex font-bold">
+          <span>Hi Dana</span>
+          <div className="animate-customPulse">
+            <Image
+              src="/emojis/heart.png"
+              alt="Heart emoji"
+              width={40}
+              height={40}
+            />
+          </div>
+        </div>
+        <div className="text-xl font-normal text-black-400">
+          <span>Welkom in je persoonlijke krasposter app!</span>
+        </div>
+      </div>
       <main className="flex-1 flex flex-col gap-6">
         <div className="relative h-[32rem] w-[32rem] flex items-center justify-center">
           <div className="absolute bg-purple-100 h-[24rem] w-[24rem] rounded-full"></div>
@@ -30,8 +43,6 @@ export default async function Index() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

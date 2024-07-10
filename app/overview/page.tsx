@@ -1,7 +1,6 @@
 import Cards from "@/components/ui/Cards";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import Footer from "@/components/ui/Footer";
 
 export default async function Index() {
   const supabase = createClient();
@@ -19,7 +18,6 @@ export default async function Index() {
       <div className="w-full">
         <Cards />
       </div>
-      <Footer />
     </div>
   );
 }

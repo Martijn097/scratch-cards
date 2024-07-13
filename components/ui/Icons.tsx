@@ -69,4 +69,42 @@ const LogoutIcon = ({ className = "", ...props }) => (
   </svg>
 );
 
-export { HomeIcon, UserIcon, GiftIcon, LogoutIcon };
+const HamburgerIcon = ({ className = "", ...props }) => (
+  <svg 
+    className={`fill-current ${className}`} 
+    width="48" 
+    height="48" 
+    viewBox="0 0 48 48" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path 
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M40 16H8V12H40V16ZM40 26H8V22H40V26ZM32 36H8V32H32V36Z"
+    />
+  </svg>
+);
+
+
+const CloseIcon = ({ className = "", ...props }) => (
+  <svg 
+    className={`fill-current ${className}`} 
+    width="48"
+    height="48"
+    viewBox="0 0 48 48"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path 
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M26.8283 23.9998L37.4142 13.4139L34.5858 10.5855L23.9999 21.1714L13.4142 10.5857L10.5857 13.4141L21.1715 23.9998L10.5857 34.5859L13.4142 37.4143L23.9999 26.8283L34.5857 37.4141L37.4142 34.5857L26.8283 23.9998Z"
+    />
+  </svg>
+);
+
+
+export { HomeIcon, UserIcon, GiftIcon, LogoutIcon, HamburgerIcon, CloseIcon };

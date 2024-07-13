@@ -11,6 +11,7 @@ module.exports = {
       },
       backgroundSize: {
         '125': '125%',
+        '200': '200%'
       },
       backgroundPosition: {
         'center-center': 'center center',
@@ -20,7 +21,8 @@ module.exports = {
       },
       boxShadow: {
         DEFAULT: '0px 4px 20px 0px rgba(74, 58, 255, 0.28)',
-        'custom': '0px 10px 20px 0px rgba(4, 16, 34, 0.06), 0px 10px 20px 0px rgba(7, 33, 102, 0.12)'
+        'custom': '0px 10px 20px 0px rgba(4, 16, 34, 0.06), 0px 10px 20px 0px rgba(7, 33, 102, 0.12)',
+        'images': '0px 4px 16px 0px rgba(0, 0, 0, 0.25)'
       },
       colors: {
         accent: '#F4F4F5',
@@ -47,11 +49,16 @@ module.exports = {
       },
       animation: {
         customPulse: 'customPulse 1.5s ease-in-out infinite',
+        customWave: 'customWave 1.5s ease-in-out infinite'
       },
       keyframes: {
         customPulse: {
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.1)' },
+        },
+        customWave: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '50%': { transform: 'rotate(20deg)' },
         },
       },
     }

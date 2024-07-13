@@ -28,9 +28,7 @@ export default async function RootLayout({
     return (
       <html lang="en">
         <body className="min-h-screen bg-white text-black font-sans font-bold">
-          <div className="max-w-[1080px] mx-auto px-4">
-            {children}
-          </div>
+          {children}
         </body>
       </html>
     );
@@ -40,9 +38,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-white text-black font-sans font-bold pt-[6rem]">
         <Header />
-        <div className="max-w-[1080px] mx-auto px-4">
-          {children}
-        </div>
+        {children}
       </body>
     </html>
   );

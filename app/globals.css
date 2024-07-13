@@ -62,6 +62,24 @@
   z-index: 0;
 }
 
+.bg-pattern-opacity-160 {
+  position: relative;
+}
+
+.bg-pattern-opacity-160::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/pattern.svg'); /* Ensure the correct path */
+  background-size: 160%;
+  background-position: center center;
+  opacity: 0.5; /* Adjust the opacity as needed */
+  z-index: 0;
+}
+
 /* @layer components {
   .filter-scratch {
     filter: url('#remove-black');

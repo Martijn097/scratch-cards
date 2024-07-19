@@ -2,6 +2,8 @@
 
 import { HamburgerIcon, CloseIcon } from "@/components/ui/Icons";
 import React, { useState, useEffect } from 'react';
+import AuthButton2 from "@/components/AuthButton2";
+import Link from 'next/link';
 
 export default function HeaderOpenMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,10 +33,35 @@ export default function HeaderOpenMenu() {
           <CloseIcon 
             onClick={toggleNavbar}
             className={`h-16 w-16 cursor-pointer text-white fill-white transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-1' : 'opacity-0'}`} />
-          <span className={`text-white text-6xl transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-2' : 'opacity-0'}`}>Home</span>
-          <span className={`text-white text-6xl transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-3' : 'opacity-0'}`}>Krasloten</span>
-          <span className={`text-white text-6xl transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-4' : 'opacity-0'}`}>Over</span>
-          <span className={`text-white text-6xl transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-5' : 'opacity-0'}`}>Uitloggen</span>
+          <Link
+            href="/"
+            onClick={toggleNavbar}
+            className={`text-white text-6xl transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-2' : 'opacity-0'}`}
+            >
+            <span>Home</span>
+          </Link>
+          <Link 
+            href="/overview"
+            onClick={toggleNavbar}
+            className={`text-white text-6xl transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-3' : 'opacity-0'}`}
+            >
+            <span>Krasloten</span>
+          </Link>
+          <Link 
+            href="/about"
+            onClick={toggleNavbar}
+            className={`text-white text-6xl transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-4' : 'opacity-0'}`}
+            >
+            <span>Over</span>
+          </Link>
+          <Link 
+            href=""
+            onClick={toggleNavbar}
+            className={`text-white text-6xl transition-all opacity-0 duration-500 ${isOpen ? 'fade-in-delay-5' : 'opacity-0'}`}
+          >
+            <span>Uitloggen</span>
+          </Link>
+          <AuthButton2 />
         </div>
       </div>
     </div>

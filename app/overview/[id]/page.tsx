@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import confetti from 'canvas-confetti';
 import { isSafari } from '@/utils/isSafari';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Define the type for your data items
 type CardType  = {
@@ -217,12 +218,22 @@ export default function Card ({ params }: { params: { id: number } }) {
             <img ref={cardCanvasRenderRef} className="scratch-card-canvas-render hide" />
             <div ref={cardCoverRef} className="scratch-card-cover shine bg-pattern-opacity bg-purple-300"></div>
           </div>
-          <img 
+          {/* <img 
             ref={cardImageRef}
             className="scratch-card-image"
-            src="https://assets.codepen.io/4175254/apple-gift-card.png"
+            src="1.png"
             alt="Apple 50$ gift card" 
-          />
+          /> */}
+          {!loading && card &&
+            <Image
+              ref={cardImageRef}
+              src={`/images/${card.id}.png`}
+              className="scratch-card-image"
+              alt="Apple 50$ gift card" 
+              width={1000}
+              height={1000}
+            />
+          }
         </div>
       </div>
       <p ref={textRef} className="scratch-card-text text-center">🎁 Kras voor je cadeau!</p>

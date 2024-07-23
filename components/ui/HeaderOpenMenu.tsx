@@ -61,7 +61,7 @@ export default function HeaderOpenMenu() {
           >
             <span>Uitloggen</span>
           </Link>
-          <AuthButton2 />
+          {/* <AuthButton2 /> */}
         </div>
       </div>
     </div>

@@ -14,10 +14,10 @@ export default async function Index() {
   }
 
   return (
-    <div className="min-h-screen flex-1 w-full flex flex-col gap-20 items-center">
+    <div className="min-h-screen flex-1 w-full flex flex-col gap-12 items-center">
 
-      <div className="flex max-w-[1080px] mx-auto px-4 mt-8 items-center w-full justify-center flex-col gap-4">
-        <div className="text-4xl flex font-bold">
+      <div className="flex max-w-[1080px] mx-auto px-4 mt-8 items-center w-full justify-center flex-col gap-2">
+        <div className="text-4xl flex font-bold gap-2">
           <span className="text-center">Hi Dana</span>
           <div className="animate-customPulse">
             <Image

@@ -106,5 +106,24 @@ const CloseIcon = ({ className = "", ...props }) => (
   </svg>
 );
 
+const LockIcon = ({ className = "", ...props }) => (
+  <svg 
+  className={`fill-current ${className}`} 
+    width="14"
+    height="18"
+    viewBox="0 0 14 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path 
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M12 7V4.89C12 3.58 11.47 2.34 10.53 1.42C9.59 0.51 8.32 0 7 0C5.68 0 4.41 0.51 3.47 1.42C2.53 2.33 2 3.58 2 4.89V7H0V18H14V7H12ZM6 14V11H8V14H6ZM4 4.89C4 4.13 4.31 3.4 4.87 2.86C5.43 2.32 6.2 2 7 2C7.8 2 8.57 2.31 9.13 2.86C9.69 3.4 10 4.14 10 4.89V7H4V4.89Z"
+      fill="white"
+    />
+  </svg>
+);
 
-export { HomeIcon, UserIcon, GiftIcon, LogoutIcon, HamburgerIcon, CloseIcon };
+
+export { HomeIcon, UserIcon, GiftIcon, LogoutIcon, HamburgerIcon, CloseIcon, LockIcon };

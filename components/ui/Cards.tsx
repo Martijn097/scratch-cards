@@ -75,7 +75,7 @@ export default function Cards() {
                     </div>
                   </div>
                   <div className="w-full flex justify-center items-center mb-4">
-                    <div className="text-xl">
+                    <div className="text-xl flex text-center">
                       ...
                     </div>
                   </div>
@@ -107,7 +107,7 @@ export default function Cards() {
                         </div>
                       </div>
                       <div className="w-full flex justify-center items-center mb-4">
-                        <div className="text-xl">
+                        <div className="text-xl flex text-center">
                           {card.title}
                         </div>
                       </div>
@@ -133,7 +133,7 @@ export default function Cards() {
                         </div>
                       </div>
                       <div className="w-full flex justify-center items-center mb-4">
-                        <div className="text-xl">
+                        <div className="text-xl flex text-center">
                           ...
                         </div>
                       </div>

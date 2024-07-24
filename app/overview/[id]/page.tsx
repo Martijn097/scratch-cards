@@ -148,7 +148,7 @@ export default function Card ({ params }: { params: { id: number } }) {
           },
         });
         if (card){
-          text.textContent = `🎉 You got a ${card.title}!`;
+          text.textContent = `🎉 ${card.title}!`;
           markAsCompleted(card.id);
         }
         cardImage?.classList.add('animate');
@@ -204,10 +204,27 @@ export default function Card ({ params }: { params: { id: number } }) {
   }, [loading, card]);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-col gap-10">
 
-      <div className="flex justify-center items-center">
-        <div className="bg-white relative scratch-card border-4 border-purple rounded-lg p-4 w-[16rem] h-[16rem]">
+      <div className="flex max-w-[1080px] mx-auto px-4 mt-8 items-center w-full justify-center flex-col gap-2">
+        <div className="text-2xl sm:text-4xl flex items-center font-bold flex gap-2">
+          <span className="text-center">Kras en win</span>
+          <div className="animate-customPulse">
+            <Image
+              src="/emojis/party.png"
+              alt="Heart emoji"
+              width={40}
+              height={40}
+            />
+          </div>
+        </div>
+        <div className="text-xl font-normal text-black-400">
+          <span className="text-center flex w-full">Beweeg met je muis of vinger over het scherm op de kaart</span>
+        </div>
+      </div>
+
+      <div className="flex max-w-[1080px] mx-auto px-10 justify-center items-center">
+        <div className="bg-white relative scratch-card rounded-lg p-4 w-full h-full sm:w-[20rem] sm:h-[20rem]">
           <div ref={cardCoverContainerRef} className="scratch-card-cover-container">
             <canvas 
               ref={canvasRef} 
@@ -216,14 +233,8 @@ export default function Card ({ params }: { params: { id: number } }) {
               height="1000"
             />
             <img ref={cardCanvasRenderRef} className="scratch-card-canvas-render hide" />
-            <div ref={cardCoverRef} className="scratch-card-cover shine bg-pattern-opacity bg-purple-300"></div>
+            <div ref={cardCoverRef} className="scratch-card-cover rounded-lg shine bg-pattern-opacity bg-purple-300"></div>
           </div>
-          {/* <img 
-            ref={cardImageRef}
-            className="scratch-card-image"
-            src="1.png"
-            alt="Apple 50$ gift card" 
-          /> */}
           {!loading && card &&
             <Image
               ref={cardImageRef}
@@ -236,9 +247,7 @@ export default function Card ({ params }: { params: { id: number } }) {
           }
         </div>
       </div>
-      <p ref={textRef} className="scratch-card-text text-center">🎁 Kras voor je cadeau!</p>
-
-      {!loading && card && <div>{card.completed ? 'yes' : 'no'}</div>}
+      <p ref={textRef} className="scratch-card-text text-center text-xl sm:text-3xl">🎁 Kras voor je cadeau!</p>
 
       <svg width="0" height="0">
         <filter id="remove-black" colorInterpolationFilters="sRGB">

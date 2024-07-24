@@ -16,9 +16,9 @@ export default async function Index() {
   return (
     <div className="min-h-screen flex-1 w-full flex flex-col gap-20 items-center">
 
-      <div className="flex mt-8 items-center w-full justify-center flex-col gap-4">
+      <div className="flex max-w-[1080px] mx-auto px-4 mt-8 items-center w-full justify-center flex-col gap-4">
         <div className="text-4xl flex font-bold">
-          <span>Hi Dana</span>
+          <span className="text-center">Hi Dana</span>
           <div className="animate-customPulse">
             <Image
               src="/emojis/heart.png"
@@ -29,10 +29,10 @@ export default async function Index() {
           </div>
         </div>
         <div className="text-xl font-normal text-black-400">
-          <span>Welkom in je persoonlijke krasposter app!</span>
+          <span className="text-center flex w-full">Welkom in je persoonlijke krasposter app!</span>
         </div>
       </div>
-      <main className="flex-1 flex flex-col gap-6 w-full max-w-[1080px] mx-auto px-4 flex items-center">
+      <main className="flex-1 flex flex-col gap-6 w-full max-w-[1080px] mx-auto px-10 flex items-center">
         <div className="relative aspect-square flex items-center justify-center w-full h-full sm:w-[32rem] sm:h-[32rem]">
           <div className="absolute bg-purple-100 rounded-full w-full h-full sm:w-[24rem] sm:h-[24rem]"></div>
           <div className="absolute bg-purple-200 rounded-full w-[90%] h-[90%] sm:w-[20rem] sm:h-[20rem]"></div>

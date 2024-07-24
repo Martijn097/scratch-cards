@@ -223,8 +223,8 @@ export default function Card ({ params }: { params: { id: number } }) {
         </div>
       </div>
 
-      <div className="flex max-w-[1080px] mx-auto px-10 justify-center items-center">
-        <div className="bg-white relative scratch-card rounded-lg p-4 sm:w-[20rem] sm:h-[20rem]">
+      <div className="flex max-w-[1080px] mx-auto px-8 sm:px-10 justify-center items-center">
+        <div className="bg-white relative scratch-card rounded-lg p-4 w-[16rem] h-[16rem] sm:w-[20rem] sm:h-[20rem]">
           <div ref={cardCoverContainerRef} className="scratch-card-cover-container">
             <canvas 
               ref={canvasRef} 

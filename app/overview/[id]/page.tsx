@@ -148,7 +148,8 @@ export default function Card ({ params }: { params: { id: number } }) {
           },
         });
         if (card){
-          text.textContent = `🎉 ${card.title}!`;
+          text.textContent = `${card.title}!`;
+          text.style.color = '#0ED96B';
           markAsCompleted(card.id);
         }
         cardImage?.classList.add('animate');
@@ -247,7 +248,17 @@ export default function Card ({ params }: { params: { id: number } }) {
           }
         </div>
       </div>
-      <p ref={textRef} className="scratch-card-text text-center text-xl sm:text-3xl">🎁 Kras voor je cadeau!</p>
+      <div className="flex items-center justify-center gap-4">
+        <Image
+          src="/emojis/gift.png"
+          alt="Apple 50$ gift card" 
+          width={32}
+          height={32}
+        />
+        <p ref={textRef} className="scratch-card-text text-center text-xl sm:text-3xl">
+          Kras voor je cadeau!
+        </p>
+      </div>
 
       <svg width="0" height="0">
         <filter id="remove-black" colorInterpolationFilters="sRGB">

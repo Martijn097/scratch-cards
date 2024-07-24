@@ -32,12 +32,12 @@ export default async function Index() {
           <span>Welkom in je persoonlijke krasposter app!</span>
         </div>
       </div>
-      <main className="flex-1 flex flex-col gap-6">
-        <div className="relative h-[32rem] w-[32rem] flex items-center justify-center">
-          <div className="absolute bg-purple-100 h-[24rem] w-[24rem] rounded-full"></div>
-          <div className="absolute bg-purple-200 h-[20rem] w-[20rem] rounded-full"></div>
-          <div className="rotate-[-10deg] shadow-custom bg-pattern-opacity absolute bg-purple-300 h-[16rem] w-[16rem] rounded-lg flex items-center justify-center">
-            <div className="absolute bg-purple-400 h-[8rem] w-[8rem] rounded-full flex items-center justify-center">
+      <main className="flex-1 flex flex-col gap-6 w-full max-w-[1080px] mx-auto px-4 flex items-center">
+        <div className="relative aspect-square flex items-center justify-center w-full h-full sm:w-[32rem] sm:h-[32rem]">
+          <div className="absolute bg-purple-100 rounded-full w-full h-full sm:w-[24rem] sm:h-[24rem]"></div>
+          <div className="absolute bg-purple-200 rounded-full w-[90%] h-[90%] sm:w-[20rem] sm:h-[20rem]"></div>
+          <div className="rotate-[-10deg] shadow-custom bg-pattern-opacity absolute bg-purple-300 w-[80%] h-[80%] rounded-lg flex items-center justify-center sm:w-[16rem] sm:h-[16rem]">
+            <div className="absolute bg-purple-400 w-[60%] h-[60%] rounded-full flex items-center justify-center sm:h-[8rem] sm:w-[8rem]">
               <span className="text-white text-3xl text-center leading-7">Kras<br></br>& win</span>
             </div>
           </div>
